@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 24, 2024 at 01:23 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Gép: 127.0.0.1
+-- Létrehozás ideje: 2024. Ápr 24. 09:22
+-- Kiszolgáló verziója: 10.4.28-MariaDB
+-- PHP verzió: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `language_exam`
+-- Adatbázis: `language_exam`
 --
 CREATE DATABASE IF NOT EXISTS `language_exam` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
 USE `language_exam`;
@@ -26,7 +26,7 @@ USE `language_exam`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `appointments`
+-- Tábla szerkezet ehhez a táblához `appointments`
 --
 
 CREATE TABLE `appointments` (
@@ -38,7 +38,7 @@ CREATE TABLE `appointments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- Dumping data for table `appointments`
+-- A tábla adatainak kiíratása `appointments`
 --
 
 INSERT INTO `appointments` (`id`, `email`, `name`, `date`, `user_name`) VALUES
@@ -55,12 +55,13 @@ INSERT INTO `appointments` (`id`, `email`, `name`, `date`, `user_name`) VALUES
 (15, '', '', '2024-05-01 09:00:00', 'Zsofi'),
 (16, '', '', '2024-05-01 09:00:00', 'Zsofi'),
 (17, '', '', '2024-05-01 09:00:00', 'Zsofi'),
-(18, '', '', '2024-05-02 11:00:00', 'Zsofi');
+(18, '', '', '2024-05-02 11:00:00', 'Zsofi'),
+(19, '', '', '2024-05-01 09:00:00', 'Zsofi');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `available_appointments`
+-- Tábla szerkezet ehhez a táblához `available_appointments`
 --
 
 CREATE TABLE `available_appointments` (
@@ -69,11 +70,10 @@ CREATE TABLE `available_appointments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- Dumping data for table `available_appointments`
+-- A tábla adatainak kiíratása `available_appointments`
 --
 
 INSERT INTO `available_appointments` (`id`, `date`) VALUES
-(1, '2024-05-01 09:00:00'),
 (2, '2024-05-01 10:00:00'),
 (3, '2024-05-01 11:00:00'),
 (4, '2024-05-02 09:00:00'),
@@ -86,7 +86,26 @@ INSERT INTO `available_appointments` (`id`, `date`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tábla szerkezet ehhez a táblához `booked_appointments`
+--
+
+CREATE TABLE `booked_appointments` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `user_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `booked_appointments`
+--
+
+INSERT INTO `booked_appointments` (`id`, `date`, `user_name`) VALUES
+(2, '2024-05-01 10:00:00', 'Zsofi');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `users`
 --
 
 CREATE TABLE `users` (
@@ -96,7 +115,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- Dumping data for table `users`
+-- A tábla adatainak kiíratása `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
@@ -108,51 +127,64 @@ INSERT INTO `users` (`id`, `username`, `password`) VALUES
 (6, 'tomcsaa', '$2y$10$LBc4ZsRDnowHzxYlEszvq.jPZm0DZr3TNkilK0qsmqblcHbp51o/m'),
 (7, 'tomcsaaa', '$2y$10$E39rbqtKu9L/y.dRFNwYMeoiKioycVckBshqC0XSq3ui8VFXc.4GK'),
 (8, 'Reka', '$2y$10$33vuE03/XBE9i.s8OUxBBuO5t2lqC4NebO2QA8oh21wZpxKs3U.3W'),
-(9, 'Zsofi', '$2y$10$yk2ZSUI/qhD7ZFMGo66j6e.gAH1aLgfhpemZCWq14HFlkjSAJy7LC');
+(9, 'Zsofi', '$2y$10$yk2ZSUI/qhD7ZFMGo66j6e.gAH1aLgfhpemZCWq14HFlkjSAJy7LC'),
+(10, 'Kovi', '$2y$10$jLlECyemctl2Xj7JUnRhQeIcCDLdsOnR/EHXvJMMZ90RdImBUoCOa');
 
 --
--- Indexes for dumped tables
+-- Indexek a kiírt táblákhoz
 --
 
 --
--- Indexes for table `appointments`
+-- A tábla indexei `appointments`
 --
 ALTER TABLE `appointments`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `available_appointments`
+-- A tábla indexei `available_appointments`
 --
 ALTER TABLE `available_appointments`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- A tábla indexei `booked_appointments`
+--
+ALTER TABLE `booked_appointments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- A tábla indexei `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- A kiírt táblák AUTO_INCREMENT értéke
 --
 
 --
--- AUTO_INCREMENT for table `appointments`
+-- AUTO_INCREMENT a táblához `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT for table `available_appointments`
+-- AUTO_INCREMENT a táblához `available_appointments`
 --
 ALTER TABLE `available_appointments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT a táblához `booked_appointments`
+--
+ALTER TABLE `booked_appointments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,10 +1,38 @@
+<?php
+session_start();
+require_once('connect.php');
+
+$errors = array();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['login'])) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $sql = "SELECT * FROM users WHERE username = :username";
+        $stmt = $connect->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $username;
+            header("Location: index.php");
+            exit;
+        } else {
+            $errors[] = "Hibás felhasználónév vagy jelszó!";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bejelentkezés</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0wnVR/y0vNUo/FZi+SLfSkDkYY5imli21Wok/lD2Fo+Q8kGNc0RR1omEeEW0D4W" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -41,7 +69,7 @@
             <label for="password" class="form-label">Jelszó:</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
-        <button type="submit" class="btn btn-primary">Bejelentkezés</button>
+        <button type="submit" class="btn btn-primary" name="login">Bejelentkezés</button>
     </form>
     <?php if (!empty($errors)) { ?>
         <div class="alert alert-danger mt-4" role="alert">
@@ -52,6 +80,6 @@
     <?php } ?>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-n2+3pPKobq5a2cZer6cf0ZgU6Pz7WP2gDycyruoIq6B+uIjXUrbwlsR2zPkXJd19" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
